@@ -17,5 +17,5 @@
 
 # 清单
 
-- [] react-native
-- [] react-navigation
+- [ ] react-native
+- [ ] react-navigation
