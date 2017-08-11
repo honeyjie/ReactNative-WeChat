@@ -8,7 +8,17 @@
 
 # 期望
 
-- 一个小应用
+- 一个小应用：模仿微信
+
+## 进度
+
+- [] 完成路由设计。
+   - 四个 Tab: Chats、Contacts、Discover、Me
+   - 路由间的跳转:
+     - Chats -> ChatWith -> Profile
+     - Contacts -> ChatsWith\Profile
+     - Discover -> Moments -> Profile
+     - Me -> MyPosts -> Profile
 
 # 学习方式
 
