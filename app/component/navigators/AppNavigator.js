@@ -1,13 +1,13 @@
 import React from 'react'
 import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation'
 
-import ChatWith from '../components/ChatWith'
-import Contacts from '../components/Contacts'
-import Discover from '../components/Discover'
-import Me from '../components/Me'
-// import Moments from '../components/Moments'
-import Profile from '../components/Profile'
-import Chats from '../components/Chats'
+import ChatWith from '../pages/ChatWith'
+import Contacts from '../pages/Contacts'
+import Discover from '../pages/Discover'
+import Me from '../pages/Me'
+import Moments from '../pages/Moments'
+import Profile from '../pages/Profile'
+import Chats from '../pages/Chats'
 
 const MyAppTab = TabNavigator(
   {
@@ -29,18 +29,16 @@ const MyAppTab = TabNavigator(
       activeTintColor: '#66cc00',
       labelStyle: {
         fontSize: 10,
+        marginTop: -4
       },
-    },
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: '#333',
-      },
-      headerTintColor: '#fff',
-    },
+      style: {
+        height: 44
+      }
+    }
   }
 )
 
-const MyApp = StackNavigator(
+const AppNavigator = StackNavigator(
   {
     MyAppTab: {
       screen: MyAppTab,
@@ -51,9 +49,9 @@ const MyApp = StackNavigator(
     Profile: {
       screen: Profile
     },
-    // Moments: {
-    //   screen: Moments
-    // }
+    Moments: {
+      screen: Moments
+    }
   },
   {
     navigationOptions: {
@@ -61,11 +59,15 @@ const MyApp = StackNavigator(
         backgroundColor: '#333',
       },
       headerTintColor: '#fff',
+      'lazy': true,
+      tabBarOptions: {
+        scrollEnabled: true
+      }
     },
   }
 )
 
-export default MyApp
+export default AppNavigator
 // import React from 'react';
 // import PropTypes from 'prop-types';
 // import { connect } from 'react-redux';

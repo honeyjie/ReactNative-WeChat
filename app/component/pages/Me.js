@@ -8,7 +8,7 @@ class Me extends Component {
     title: 'Me',
     tabBarLabel: 'Me',
     tabBarIcon: ({ tintColor }) => (
-      <Icons name="user-o" size={24} color={tintColor} />
+      <Icons name="user-o" size={20} color={tintColor} />
     )
   }
 

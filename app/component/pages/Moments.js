@@ -8,10 +8,12 @@ class Moments extends Component {
   })
 
   render() {
+    const {navigate, state} = this.props.navigation
+
     return (
       <View>
         <Button
-          onPress={() => navigate('ChatWith', { name: state.params.name })}
+          onPress={() => navigate('Profile', { name: 'Lime' })}
           title="查看个人页"
         />
         <SimpleText banner="Moments" />

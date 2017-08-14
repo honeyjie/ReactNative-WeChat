@@ -3,26 +3,26 @@ import { View, Text, StyleSheet, Button } from 'react-native'
 import SimpleText from './SimpleText'
 import Icons from 'react-native-vector-icons/FontAwesome'
 
-class Chats extends Component {
+class Discover extends Component {
   static navigationOptions = {
-    title: 'Chats',
-    tabBarLabel: 'Chats',
+    title: 'Discover',
+    tabBarLabel: 'Discover',
     tabBarIcon: ({ tintColor }) =>
-      <Icons name="comment-o" size={24} color={tintColor} />,
+      <Icons name="eercast" size={20} color={tintColor} />,
   }
 
   render() {
-    const { navigate } = this.props.navigation
+    const { state, navigate } = this.props.navigation
     return (
       <View>
         <Button
-          onPress={() => navigate('ChatWith', { name: 'Lime' })}
-          title="进入聊天"
+          onPress={() => navigate('Moments')}
+          title="进入朋友圈"
         />
-        <SimpleText banner="Chats" />
+        <SimpleText banner="Discover" />
       </View>
     )
   }
 }
 
-export default Chats
+export default Discover
