@@ -8,17 +8,11 @@ import {
   ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
-import {
-  userInfoSelector,
-  friendSelector,
-  friendChatLogSelector,
-} from '../selector/contacts'
-import { getCurrentFriendId, addChatLog } from '../actions/contacts'
-import { is } from 'immutable'
+import { toJS } from '../helper/toJS'
+import { getChatLogs, addChatLog } from '../actions/contacts'
+import { chatLogsSelector, friendsSelector } from '../selector/contacts'
 import SimpleText from './SimpleText'
-import OneMessage from '../components/OneMessage'
-
-const messageId = 0
+import Messages from '../components/Messages'
 
 class ChatWith extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -29,94 +23,80 @@ class ChatWith extends Component {
     super(props)
 
     this.state = {
-      textInput: '',
+      text: '',
     }
   }
 
   componentWillMount() {
-    console.log('---')
-    const { navigation, getCurrentFriendId } = this.props
+    const { navigation, getChatLogs } = this.props
     const id = navigation.state.params.id
-    console.log(id)
-    id && getCurrentFriendId(navigation.state.params.id)
+
+    getChatLogs(id)
   }
 
   sendMessage = message => {
-    const { friendChatLog, navigation, addChatLog } = this.props
+    if (!message) return
+
+    const { chatLogs, navigation, addChatLog } = this.props
     const id = navigation.state.params.id
-    console.log(friendChatLog)
+
+    const sendTime = Date.now()
+    const isIdChanged = message.slice(0, 2) === '>c'
+    const whoseId = isIdChanged ? id : 0
+    const sendMessage = isIdChanged ? message.substring(2) : message
+
+    sendMessage && addChatLog(id, sendMessage, sendTime, whoseId)
+
     this.setState({
-      textInput: '',
+      text: '',
     })
-
-    const lastSendTime = addChatLog.lastTime || 0
-    const now = Date.now()
-
-    const sendTime = now - lastSendTime > 60 * 1000 ? now : lastSendTime
-    console.log(sendTime)
-
-    addChatLog(id, message, sendTime)
-  }
-
-  getMessages = friendChatLog => {
-    if (is(friendChatLog) === is({})) {
-      return []
-    }
-
-    const messageTimes = Object.keys(friendChatLog.messages)
-    const messageSections = Object.values(friendChatLog.messages)
-    const messages = []
-    messageTimes.map((messageTime, index) => {
-      messageSections[index].map(message => {
-        messages.push({
-          time: parseInt(messageTime, 10),
-          message: message,
-        })
-      })
-    })
-
-    return messages
   }
 
   render() {
-    const { userInfo, friend, friendChatLog } = this.props
-    console.log(this.props)
-    const lastSendTime = friendChatLog
-      ? parseInt(friendChatLog.lastTime, 10)
-      : 0
-    const messages = this.getMessages(friendChatLog)
-    console.log(messages)
+    const { friends, chatLogs, navigation } = this.props
+    const id = navigation.state.params.id
+    const friend = friends[id]
+    const userInfo = friends['0']
 
+    const chatMessages = chatLogs[id]
     return (
       <View style={styles.root}>
         <View style={styles.messageBox}>
           <ScrollView>
-            {messages.map(({ time, message }, index) => {
-              return (
-                <OneMessage
-                  key={index}
-                  userInfo={userInfo}
-                  message={message}
-                  lastSendTime={lastSendTime}
-                  sendTime={time}
-                />
-              )
-            })}
+            {chatMessages &&
+              chatMessages.map(({ lastTime, messages }, index) => {
+                console.log(chatMessages[index - 1])
+                return (
+                  <Messages
+                    key={index}
+                    userInfo={userInfo}
+                    friend={friend}
+                    messages={messages}
+                    lastSendTime={
+                      (chatMessages[index - 1] &&
+                        chatMessages[index - 1].lastTime) ||
+                      0
+                    }
+                    lastTime={lastTime}
+                  />
+                )
+              })}
           </ScrollView>
         </View>
         <View style={styles.inputBox}>
           <TextInput
             style={styles.textInput}
-            value={this.state.textInput}
+            placeholder="请输入..."
             onChangeText={text => {
+              console.log(text)
               this.setState({
-                textInput: text,
+                text: text
               })
             }}
-            placeholder="请输入..."
+            value={this.state.text}
           />
           <TouchableOpacity
-            onPress={() => this.sendMessage(this.state.textInput)}
+            onPress={() => this.sendMessage(this.state.text)}
             style={styles.send}
           >
             <Text>发送</Text>
@@ -131,15 +111,13 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     display: 'flex',
-    // justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   messageBox: {
     flex: 1,
     height: 600,
   },
   inputBox: {
-    position: 'absolute',
-    bottom: 0,
     left: 10,
     right: 10,
     display: 'flex',
@@ -157,24 +135,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   send: {
-    marginLeft: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 })
 
 export default connect(
-  (state, props) => {
-    return {
-      friend: () =>
-      friendSelector(state, props) ? friendSelector(state, props).toJS() : {},
-      userInfo: () =>
-        userInfoSelector(state, props)
-          ? userInfoSelector(state, props).toJS()
-          : {},
-      friendChatLog: () =>
-        friendChatLogSelector(state, props)
-          ? friendChatLogSelector(state, props).toJS()
-          : {},
-    }
-  },
-  { getCurrentFriendId, addChatLog }
+  (state, props) => ({
+    friends: toJS(friendsSelector(state, props)),
+    chatLogs: toJS(chatLogsSelector(state, props)),
+  }),
+  { getChatLogs, addChatLog }
 )(ChatWith)

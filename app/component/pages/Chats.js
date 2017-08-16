@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
 import SimpleText from './SimpleText'
 import Icons from 'react-native-vector-icons/FontAwesome'
-import { chatLogsSelector } from '../selector/contacts'
-import { friendsSelector } from '../selector/contacts'
+import { is } from 'immutable'
+import { toJS } from '../helper/toJS'
+import { getRecentChatLogs, getFriends } from '../actions/contacts'
+import { recentChatLogsSelector, friendsSelector } from '../selector/contacts'
 import FriendsList from '../components/FriendsList'
 import { connect } from 'react-redux'
-import { toJS } from 'immutable'
 import { chooseChatFriends } from '../helper/chooseChatFriends'
 
 class Chats extends Component {
@@ -17,18 +18,37 @@ class Chats extends Component {
       <Icons name="comment-o" size={20} color={tintColor} />,
   }
 
+  componentWillMount() {
+    const { getRecentChatLogs, getFriends } = this.props
+
+    getRecentChatLogs()
+    getFriends()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { recentProps, getRecentChatLogs } = this.props
+    if (!is(nextProps.recentChatLogs, this.props.recentChatLogs)) {
+      getRecentChatLogs()
+    }
+  }
+
+
   render() {
-    const { navigation, chatLogs, friends } = this.props
-    const { navigate } = navigation
-    const friendsChatLog = chooseChatFriends(friends, chatLogs)
-
-    console.log(friendsChatLog)
-
+    console.log(this.props)
+    const { navigation, recentChatLogs, friends } = this.props
+    const friendsChatLog = chooseChatFriends(friends, recentChatLogs)
     return <FriendsList navigation={navigation} friends={friendsChatLog} />
   }
 }
 
-export default connect((state, props) => ({
-  chatLogs: chatLogsSelector(state, props).toJS(),
-  friends: friendsSelector(state, props).toJS(),
-}))(Chats)
+export default connect(
+  (state, props) => ({
+    recentChatLogs: toJS(recentChatLogsSelector(state, props)),
+    friends:
+      friendsSelector(state, props) && friendsSelector(state, props).toJS(),
+  }),
+  {
+    getRecentChatLogs,
+    getFriends,
+  }
+)(Chats)

@@ -8,6 +8,7 @@ const selectContactsDomain = state => {
 export const friendsSelector = createSelector(
   selectContactsDomain,
   contacts => {
+    console.log(contacts.toJS())
     return contacts.get('friends')
   }
 )
@@ -23,14 +24,21 @@ export const friendsSelector = createSelector(
 //   return friends.get(id)
 // })
 
-export const chatLogsSelector = createSelector(selectContactsDomain, (contacts) => {
-  return contacts.get('chatLogs')
-})
-
 // export const friendChatLogSelector = createSelector([chatLogsSelector, currentFriendIdSelector], (chatLogs, id) => {
 //   return chatLogs.get(id)
 // })
 
-export const userInfoSelector = createSelector(selectContactsDomain, contacts=> {
-  return contacts.get('userInfo')
+// export const userInfoSelector = createSelector(selectContactsDomain, contacts=> {
+//   return contacts.get('userInfo')
+// })
+export const chatLogsSelector = createSelector(selectContactsDomain, (contacts) => {
+  console.log('chatLogsSelector', contacts.toJS())
+  return contacts.get('chatLogs')
 })
+
+export const recentChatLogsSelector = createSelector(selectContactsDomain, (contacts) => {
+    console.log('recentChatLogsSelector', contacts.toJS())
+  return contacts.get('recentChatLogs')
+})
+
+

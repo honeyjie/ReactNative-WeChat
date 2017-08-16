@@ -5,8 +5,8 @@ import Icons from 'react-native-vector-icons/FontAwesome'
 import faker from 'faker'
 import { connect } from 'react-redux'
 import { friendsSelector } from '../selector/contacts'
-import { addFriend, deleteFriend } from '../actions/contacts'
-import { toJS } from 'immutable'
+import { addFriend, deleteFriend, getFriends } from '../actions/contacts'
+import { toJS } from '../helper/toJS'
 import FriendsList from '../components/FriendsList'
 
 class Contacts extends Component {
@@ -23,7 +23,7 @@ class Contacts extends Component {
   }
 
   componentWillMount() {
-    const { addFriend, navigation: { setParams } } = this.props
+    const { addFriend, navigation: { setParams }, getFriends } = this.props
 
     setParams({
       renderHeaderRight: () =>
@@ -37,23 +37,8 @@ class Contacts extends Component {
           }}
         />,
     })
-  }
 
-  componentDidMount() {
-    console.log('DidMount')
-  }
-
-  componentReceiveProps() {
-    console.log('ReceiveProps')
-  }
-
-  shouldComponentUpdate() {
-    console.log('shouldComponentUpdate')
-    return true
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate')
+    getFriends()
   }
 
   render() {
@@ -67,7 +52,7 @@ const styles = StyleSheet.create({})
 
 export default connect(
   (state, props) => ({
-    friends: friendsSelector(state, props).toJS(),
+    friends: toJS(friendsSelector(state, props)),
   }),
-  { addFriend, deleteFriend }
+  { addFriend, deleteFriend, getFriends }
 )(Contacts)

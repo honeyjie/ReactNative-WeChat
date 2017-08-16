@@ -1,13 +1,10 @@
 export const formateDate = (sendTime, lastSendTime) => {
-  const now = new Date(sendTime)
-
-  const gapTime = sendTime - lastSendTime
-  console.log(sendTime, lastSendTime, gapTime)
-
-  const Month = now.getMonth() + 1
-  const Day = now.getDate()
-  const Hours = now.getHours()
-  const Minutes = now.getMinutes()
+  const time = new Date(sendTime)
+  const gapTime = sendTime- lastSendTime
+  const Month = time.getMonth() + 1
+  const Day = time.getDate()
+  const Hours = time.getHours()
+  const Minutes = time.getMinutes()
 
   if (gapTime <= 60 * 1000) {
     return null
