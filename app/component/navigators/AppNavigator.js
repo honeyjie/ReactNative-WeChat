@@ -8,6 +8,7 @@ import Me from '../pages/Me'
 import Moments from '../pages/Moments'
 import Profile from '../pages/Profile'
 import Chats from '../pages/Chats'
+import Posts from '../pages/Posts'
 
 const MyAppTab = TabNavigator(
   {
@@ -51,6 +52,9 @@ const AppNavigator = StackNavigator(
     },
     Moments: {
       screen: Moments
+    },
+    Posts: {
+      screen: Posts
     }
   },
   {

@@ -3,15 +3,12 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import { formateDate } from '../helper/formateDate'
 
 const OneMessage = ({ message, whoseId, userInfo, friend }) => {
-  const messageStyle =
-    whoseId === 0
-      ? styles.message
-      : styles.others
+  const isMe = whoseId === 0
+  const avatar = isMe ? userInfo.avatar : friend.avatar
 
-  const avatar = whoseId === 0 ? userInfo.avatar : friend.avatar
   return (
-    <View style={messageStyle}>
-      <View style={styles.text}>
+    <View style={isMe ? styles.message : styles.others}>
+      <View style={[styles.text, !isMe && { backgroundColor: '#fff' }]}>
         <Text>
           {message}
         </Text>
@@ -24,8 +21,7 @@ const OneMessage = ({ message, whoseId, userInfo, friend }) => {
 export default class Messages extends Component {
   render() {
     const { messages, userInfo, friend, lastTime, lastSendTime } = this.props
-
-    const timeStamp = formateDate(lastTime, lastSendTime )
+    const timeStamp = formateDate(lastTime, lastSendTime)
 
     return (
       <View style={styles.root}>
@@ -84,5 +80,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 10,
     borderRadius: 5,
+  },
+  trangle: {
+    position: 'absolute',
+    width: 5,
+    height: 5,
+    backgroundColor: 'orange',
   },
 })

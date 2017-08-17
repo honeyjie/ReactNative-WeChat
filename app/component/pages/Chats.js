@@ -25,17 +25,9 @@ class Chats extends Component {
     getFriends()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { recentProps, getRecentChatLogs } = this.props
-    if (!is(nextProps.recentChatLogs, this.props.recentChatLogs)) {
-      getRecentChatLogs()
-    }
-  }
-
-
   render() {
-    console.log(this.props)
     const { navigation, recentChatLogs, friends } = this.props
+
     const friendsChatLog = chooseChatFriends(friends, recentChatLogs)
     return <FriendsList navigation={navigation} friends={friendsChatLog} />
   }

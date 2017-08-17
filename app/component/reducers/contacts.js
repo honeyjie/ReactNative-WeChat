@@ -22,6 +22,7 @@ export default handleActions(
       const { id, name, avatar } = action.payload
       const newState = state.mergeDeepIn(['friends'], {
         [id]: {
+          id,
           name,
           avatar,
         },
@@ -49,9 +50,8 @@ export default handleActions(
             .setIn(['chatLogs', id, lastIndex, 'lastTime'], sendTime)
             .setIn(['recentChatLogs', id], {
               lastTime: sendTime,
-              lastMessages: message,
+              lastMessage: message,
             })
-          console.log(newState)
           return newState
         } else {
           const newState = state
@@ -63,9 +63,8 @@ export default handleActions(
             })
             .setIn(['recentChatLogs', id], {
               lastTime: sendTime,
-              lastMessages: message,
+              lastMessage: message,
             })
-          console.log(newState)
           return newState
         }
       } else {
@@ -81,7 +80,7 @@ export default handleActions(
           })
           .setIn(['recentChatLogs', id], {
             lastTime: sendTime,
-            lastMessages: message,
+            lastMessage: message,
           })
 
         return newState

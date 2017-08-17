@@ -57,15 +57,14 @@ class ChatWith extends Component {
     const id = navigation.state.params.id
     const friend = friends[id]
     const userInfo = friends['0']
-
     const chatMessages = chatLogs[id]
+
     return (
       <View style={styles.root}>
         <View style={styles.messageBox}>
           <ScrollView>
             {chatMessages &&
               chatMessages.map(({ lastTime, messages }, index) => {
-                console.log(chatMessages[index - 1])
                 return (
                   <Messages
                     key={index}
@@ -88,10 +87,10 @@ class ChatWith extends Component {
             style={styles.textInput}
             placeholder="请输入..."
             onChangeText={text => {
-              console.log(text)
               this.setState({
                 text: text
               })
+              console.log(this.state)
             }}
             value={this.state.text}
           />
@@ -110,7 +109,6 @@ class ChatWith extends Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    display: 'flex',
     justifyContent: 'space-between',
   },
   messageBox: {

@@ -26,7 +26,7 @@ class Profile extends Component {
       <View style={styles.root}>
         <View style={styles.info}>
           <Image
-            style={{ width: 76, height: 76, borderRadius: 5 }}
+            style={{ width: 60, height: 60, borderRadius: 5 }}
             source={{ uri: avatar }}
           />
           <View style={styles.content}>
@@ -53,12 +53,9 @@ class Profile extends Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'flex-start',
-    backgroundColor: '#ccc',
+    justifyContent: 'flex-start'
   },
   info: {
-    display: 'flex',
     flexDirection: 'row',
     padding: 10,
     backgroundColor: '#fff',
@@ -67,7 +64,6 @@ const styles = StyleSheet.create({
   content: {
     paddingLeft: 10,
     flex: 1,
-    display: 'flex',
   },
   weixinId: {
     fontSize: 12,
@@ -82,7 +78,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 5,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   },

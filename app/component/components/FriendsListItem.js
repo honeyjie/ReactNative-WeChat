@@ -6,10 +6,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native'
+import { RecentTime } from '../helper/formateDate'
 
-const FriendsListItem = ({ avatar, name, id, navigation }) => {
+const FriendsListItem = ({ avatar, name, id, navigation, lastTime, lastMessage }) => {
   const isChats = navigation.state.routeName === 'Chats'
-
   const { navigate } = navigation
 
   const handlePress = (id, name) => {
@@ -17,6 +17,8 @@ const FriendsListItem = ({ avatar, name, id, navigation }) => {
       ? navigate('ChatWith', { id, name })
       : navigate('Profile', { id, name })
   }
+
+  const time = lastTime && RecentTime(lastTime)
 
   return (
     <TouchableOpacity style={styles.root} onPress={()=>handlePress(id, name)}>
@@ -29,9 +31,9 @@ const FriendsListItem = ({ avatar, name, id, navigation }) => {
             <Text style={styles.name}>
               {name}
             </Text>
-            {isChats && <Text style={styles.message}>Nice to meet you!</Text>}
+            {isChats && <Text style={styles.message}>{lastMessage}</Text>}
           </View>
-          {isChats && <Text style={styles.time}>19：00</Text>}
+          {isChats && <Text style={styles.time}>{time}</Text>}
         </View>
     </TouchableOpacity>
   )
@@ -39,7 +41,6 @@ const FriendsListItem = ({ avatar, name, id, navigation }) => {
 
 const styles = StyleSheet.create({
   root: {
-    display: 'flex',
     flexDirection: 'row',
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
@@ -57,7 +58,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   content: {
-    display: 'flex',
     flex: 1,
     justifyContent: 'center',
   },

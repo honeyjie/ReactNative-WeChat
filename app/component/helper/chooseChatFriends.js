@@ -6,5 +6,6 @@ export const chooseChatFriends = (obj1, obj2) => {
       Object.assign(result, { [key]: Object.assign({}, obj2[key], obj1[key]) })
     }
   }
+
   return result
 }

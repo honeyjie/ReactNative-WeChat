@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
-import SimpleText from './SimpleText'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TouchableHighlight,
+  Image
+} from 'react-native'
 import Icons from 'react-native-vector-icons/FontAwesome'
+import { OneRow } from '../components/OneRow'
 
 class Discover extends Component {
   static navigationOptions = {
@@ -13,16 +20,30 @@ class Discover extends Component {
 
   render() {
     const { state, navigate } = this.props.navigation
+
     return (
-      <View>
-        <Button
-          onPress={() => navigate('Moments')}
-          title="进入朋友圈"
+      <View style={styles.root}>
+      <View style={styles.moments}>
+        <OneRow
+          iconName="chrome"
+          text="Moments"
+          handlePress={()=>navigate('Moments')}
+         style={styles.row}
         />
-        <SimpleText banner="Discover" />
+        </View>
       </View>
     )
   }
 }
 
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    paddingTop: 10
+  },
+  moments: {
+    flex: 1,
+    flexDirection: 'row'
+  }
+})
 export default Discover

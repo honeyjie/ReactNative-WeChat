@@ -4,23 +4,25 @@ import FriendsListItem from './FriendsListItem'
 
 const FriendsList = ({ friends, navigation }) => {
   const friendsId = Object.keys(friends)
-  console.log(friends)
+
   return (
     <View style={styles.root}>
       <ScrollView>
-        {Object.values(
-          friends
-        ).map(({ id, name, avatar, time, message }, index) =>
-          <FriendsListItem
-            key={index}
-            id={id}
-            name={name}
-            avatar={avatar}
-            time={time}
-            message={message}
-            navigation={navigation}
-          />
-        )}
+        <View style={styles.content}>
+          {Object.values(
+            friends
+          ).map(({ id, name, avatar, lastTime, lastMessage }, index) =>
+            <FriendsListItem
+              key={index}
+              id={id}
+              name={name}
+              avatar={avatar}
+              lastTime={lastTime}
+              lastMessage={lastMessage}
+              navigation={navigation}
+            />
+          )}
+        </View>
       </ScrollView>
     </View>
   )
@@ -29,6 +31,8 @@ const FriendsList = ({ friends, navigation }) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+  },
+  content: {
     paddingLeft: 10,
     paddingRight: 10,
   },
